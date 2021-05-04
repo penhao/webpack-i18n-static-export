@@ -1,0 +1,27 @@
+body {
+    overflow: hidden;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to top, grey, white);
+
+    .title {
+        color: red;
+        text-align: center;
+    }
+    .imgs {
+        display: flex;
+        align-items: center;
+    }
+    .sharing {
+        width: 600px;
+        height: 315px;
+        background-image: url("../../assets/images/sharing.png");
+        background-size: cover;
+        border: 1px solid green;
+    }
+}
