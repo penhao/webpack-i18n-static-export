@@ -5,7 +5,6 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-// const StaticI18nHtmlPlugin = require("webpack-static-i18n-plugin");
 const isDev = process.env.NODE_ENV !== "production";
 
 const generateHTMLPlugins = () => {
@@ -20,6 +19,7 @@ const generateHTMLPlugins = () => {
             });
         });
 };
+
 module.exports = {
     entry: {
         app: [path.resolve(__dirname, "wwwroot", "src", "App.js")],
