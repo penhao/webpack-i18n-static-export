@@ -45,6 +45,10 @@ yarn build
 └───/src
 │   └───/**/*.js
 │
+└───/locales (多語系文檔)
+│   └───en.json
+│   └───zh.json
+│
 └───/i18n (打包後生成)
 │
 │   index.html
