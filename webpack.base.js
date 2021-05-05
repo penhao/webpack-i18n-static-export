@@ -1,13 +1,25 @@
 const path = require("path");
+const glob = require("glob");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const StaticI18nHtmlPlugin = require("webpack-static-i18n-plugin");
-const RemovePlugin = require("remove-files-webpack-plugin");
+// const StaticI18nHtmlPlugin = require("webpack-static-i18n-plugin");
 const isDev = process.env.NODE_ENV !== "production";
 
+const generateHTMLPlugins = () => {
+    return glob
+        .sync(path.join(__dirname, "wwwroot/i18n/**/*.html"))
+        .map((filepath) => {
+            const fileName = filepath.match(/wwwroot\/i18n\/(.*)/)[1];
+            return new HtmlWebpackPlugin({
+                filename: fileName,
+                template: path.resolve(__dirname, "wwwroot", "i18n", fileName),
+                chunks: ["app", "styles"],
+            });
+        });
+};
 module.exports = {
     entry: {
         app: [path.resolve(__dirname, "wwwroot", "src", "App.js")],
@@ -70,16 +82,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/[name].bundle.[fullhash:8].css",
         }),
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "wwwroot", "i18n/index.html"),
-            filename: "index.html",
-            chunks: ["app", "styles"],
-        }),
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "wwwroot", "i18n/zh/index.html"),
-            filename: "zh/index.html",
-            chunks: ["app", "styles"],
-        }),
+        ...generateHTMLPlugins(),
         new CopyWebpackPlugin({
             patterns: [{ from: "./wwwroot/assets", to: "assets" }],
         }),
