@@ -9,25 +9,27 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const generateHTMLPlugins = () => {
     return glob
-        .sync(path.join(__dirname, "wwwroot/i18n/**/*.html"))
+        .sync(path.join(__dirname, "www/i18n/**/*.html"))
         .map((filepath) => {
-            const fileName = filepath.match(/wwwroot\/i18n\/(.*)/)[1];
+            const fileName = filepath.match(/www\/i18n\/(.*)/)[1];
             return new HtmlWebpackPlugin({
                 filename: fileName,
-                template: path.resolve(__dirname, "wwwroot", "i18n", fileName),
+                template: path.resolve(__dirname, "www", "i18n", fileName),
                 chunks: ["app", "styles"],
             });
         });
 };
-
 module.exports = {
     entry: {
-        app: [path.resolve(__dirname, "wwwroot", "src", "App.js")],
-        styles: [path.resolve(__dirname, "wwwroot", "styles", "all.scss")],
+        app: [path.resolve(__dirname, "www", "src", "App.ts")],
+        styles: [path.resolve(__dirname, "www", "styles", "all.scss")],
     },
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "js/[name].bundle.[fullhash:8].js",
+        filename: "assets/js/[name].bundle.[fullhash:8].js",
+    },
+    resolve: {
+        extensions: [".ejs", ".js", ".tsx", ".ts"],
     },
     module: {
         rules: [
@@ -41,12 +43,24 @@ module.exports = {
                 ],
             },
             {
+                test: /\.tsx?$/,
+                use: "ts-loader",
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.ejs$/,
+                loader: "ejs-loader",
+                options: {
+                    esModule: false,
+                },
+            },
+            {
                 test: /\.(s[ac]|c)ss$/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: "../",
+                            publicPath: "../../",
                         },
                     },
                     {
@@ -67,7 +81,7 @@ module.exports = {
                     {
                         loader: "file-loader",
                         options: {
-                            context: path.resolve(__dirname, "wwwroot"),
+                            context: path.resolve(__dirname, "www"),
                             name: "[path][name].[ext]",
                             esModule: false,
                         },
@@ -80,11 +94,11 @@ module.exports = {
         new CleanWebpackPlugin(),
         new RemoveEmptyScriptsPlugin(),
         new MiniCssExtractPlugin({
-            filename: "css/[name].bundle.[fullhash:8].css",
+            filename: "assets/css/[name].bundle.[fullhash:8].css",
         }),
         ...generateHTMLPlugins(),
         new CopyWebpackPlugin({
-            patterns: [{ from: "./wwwroot/assets", to: "assets" }],
+            patterns: [{ from: "./www/assets", to: "assets" }],
         }),
     ],
 };
