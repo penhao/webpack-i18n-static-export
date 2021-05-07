@@ -5,9 +5,8 @@
     "author": "penhao <penhao817@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "i18n-watch": "watch 'npm run i18n' www/i18n",
-        "i18n": "rimraf www/i18n && static-i18n -l en -i en -i zh www --output-dir www/i18n",
-        "dev": "webpack serve --config webpack.dev.js --progress",
+        "i18n": "rimraf i18n && static-i18n -l en -i en -i zh www --localesPath www/locales/ --output-dir i18n",
+        "dev": "npm run i18n && webpack serve --config webpack.dev.js --progress",
         "build": "npm run i18n && webpack --config webpack.prod.js"
     },
     "devDependencies": {
@@ -26,6 +25,8 @@
         "mini-css-extract-plugin": "^1.6.0",
         "node-sass": "^5.0.0",
         "normalize.css": "^8.0.1",
+        "npm-run-all": "^4.1.5",
+        "npm-watch": "^0.9.0",
         "postcss": "^8.2.13",
         "postcss-loader": "^5.2.0",
         "postcss-preset-env": "^6.7.0",
@@ -43,6 +44,8 @@
         "webpack-static-i18n-plugin": "^1.0.1"
     },
     "dependencies": {
+        "@tailwindcss/aspect-ratio": "^0.2.0",
+        "@tailwindcss/typography": "^0.4.0",
         "lodash": "^4.17.21",
         "tailwindcss": "^2.1.2",
         "validator": "^13.6.0"
