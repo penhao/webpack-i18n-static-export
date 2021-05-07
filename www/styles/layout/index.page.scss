@@ -1,16 +1,11 @@
 body {
     overflow: hidden;
 }
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(to top, grey, white);
+.page {
+    background: linear-gradient(to top, red, white);
 
     .title {
-        color: red;
+        color: green;
         text-align: center;
     }
     .imgs {
