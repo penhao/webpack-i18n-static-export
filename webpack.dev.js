@@ -5,9 +5,14 @@ const baseConfig = require("./webpack.base.js");
 module.exports = merge(baseConfig, {
     mode: "development",
     devtool: "eval-cheap-module-source-map",
-    target: "web",
     devServer: {
         port: 8080,
         contentBase: path.resolve(__dirname, "dist"),
+        watchContentBase: true,
+    },
+    target: "web",
+    watch: true,
+    watchOptions: {
+        ignored: /node_modules/,
     },
 });

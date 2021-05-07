@@ -9,12 +9,18 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const generateHTMLPlugins = () => {
     return glob
-        .sync(path.join(__dirname, "www/i18n/**/*.html"))
+        .sync(path.join(__dirname, `${isDev ? "www" : "i18n"}/**/*.html`))
         .map((filepath) => {
-            const fileName = filepath.match(/www\/i18n\/(.*)/)[1];
+            const fileName = isDev
+                ? filepath.match(/www\/(.*)/)[1]
+                : filepath.match(/i18n\/(.*)/)[1];
             return new HtmlWebpackPlugin({
                 filename: fileName,
-                template: path.resolve(__dirname, "www", "i18n", fileName),
+                template: path.resolve(
+                    __dirname,
+                    `${isDev ? "www" : "i18n"}`,
+                    fileName
+                ),
                 chunks: ["app", "styles"],
             });
         });
